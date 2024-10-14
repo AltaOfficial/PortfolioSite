@@ -23,7 +23,7 @@ export default function HomepageStarsCanvas() {
       context.arc(
         Math.floor(Math.random() * canvas.offsetWidth),
         Math.floor(Math.random() * canvas.offsetWidth),
-        5,
+        Math.random() * 4,
         0,
         2 * Math.PI
       );
