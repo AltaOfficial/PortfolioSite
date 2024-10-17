@@ -1,15 +1,15 @@
 export default function ProjectComponent({
   title,
-  frontPicture,
+  thumbnailUrl,
   tags,
   sentenceExplaination,
 }) {
   return (
     <div className="bg-[#161515] w-[22rem] h-[32rem] p-4 rounded-2xl border border-white flex flex-col gap-2">
-      <p className="text-3xl font-semibold my-3">Club Website</p>
+      <p className="text-3xl font-semibold my-3">{title}</p>
       <img
         className="rounded-lg self-center"
-        src="https://codemyviews-blog-post-images.s3.amazonaws.com/uploads/stripe.jpg"
+        src={thumbnailUrl}
         alt=""
         width={"350px"}
       />

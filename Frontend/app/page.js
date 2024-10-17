@@ -10,6 +10,7 @@ import { useRef } from "react";
 export default function Home() {
   const projectsRef = useRef();
   const previousHackathonsRef = useRef();
+
   return (
     <div className="h-dvh">
       <Navbar
