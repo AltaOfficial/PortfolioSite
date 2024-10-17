@@ -1,10 +1,10 @@
-import React from "react";
+import Link from "next/link";
 
 export default function page() {
   return (
-    <div>
-      <Link>Projects list</Link>
-      <Link>Hackathons list</Link>
+    <div className="flex flex-col">
+      <Link href={"/dashboard/projects"}>Projects list</Link>
+      <Link href={"/dashboard/hackathons"}>Hackathons list</Link>
     </div>
   );
 }

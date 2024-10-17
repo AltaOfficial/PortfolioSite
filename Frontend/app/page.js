@@ -4,6 +4,7 @@ import HeroSectionComponent from "@/components/HeroSectionComponent";
 import ProjectsSectionComponent from "@/components/ProjectsSectionComponent";
 import PreviousHackathonsSectionComponent from "@/components/PreviousHackathonsSectionComponent";
 import HomepageStarsCanvas from "@/components/HomepageStarsCanvas";
+import TechStackSectionComponent from "@/components/TechStackSectionComponent";
 import { useRef } from "react";
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
       <PreviousHackathonsSectionComponent
         previousHackathonsRef={previousHackathonsRef}
       />
+      <TechStackSectionComponent />
     </div>
   );
 }

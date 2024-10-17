@@ -2,10 +2,13 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 
 export default function HomepageStarsCanvas() {
-  const amountOfStarsToRender = 10;
+  const amountOfStarsToRender = 100;
+  const canvasDots = [];
   const canvasRef = useRef();
 
-  function draw(context) {}
+  function handleMouseMove(event) {
+    console.log("mouse position: ", event.clientX, event.clientY);
+  }
 
   useLayoutEffect(() => {
     const canvas = canvasRef.current;
@@ -18,18 +21,21 @@ export default function HomepageStarsCanvas() {
 
     context.strokeStyle = "white";
     context.fillStyle = "white";
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < amountOfStarsToRender; i++) {
       context.beginPath();
-      context.arc(
-        Math.floor(Math.random() * canvas.offsetWidth),
-        Math.floor(Math.random() * canvas.offsetWidth),
-        Math.random() * 4,
-        0,
-        2 * Math.PI
-      );
+      let canvasDotX = Math.floor(Math.random() * canvas.offsetWidth);
+      let canvasDotY = Math.floor(Math.random() * canvas.offsetWidth);
+      canvasDots.push([canvasDotX, canvasDotY]);
+      context.arc(canvasDotX, canvasDotY, Math.random() * 4, 0, 2 * Math.PI);
       context.stroke();
       context.fill();
     }
   }, []);
-  return <canvas ref={canvasRef} className="z-[0] absolute"></canvas>;
+  return (
+    <canvas
+      onMouseMove={handleMouseMove}
+      ref={canvasRef}
+      className="z-[0] absolute"
+    ></canvas>
+  );
 }
