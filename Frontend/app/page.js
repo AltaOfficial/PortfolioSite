@@ -16,7 +16,7 @@ export default function Home() {
         projectsRef={projectsRef}
         previousHackathonsRef={previousHackathonsRef}
       />
-      <HomepageStarsCanvas></HomepageStarsCanvas>
+      <HomepageStarsCanvas maxSize={5} />
       <HeroSectionComponent projectsRef={projectsRef} />
       <ProjectsSectionComponent projectsRef={projectsRef} />
       <PreviousHackathonsSectionComponent

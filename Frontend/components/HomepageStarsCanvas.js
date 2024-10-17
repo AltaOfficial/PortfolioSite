@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef } from "react";
 
-export default function HomepageStarsCanvas() {
+export default function HomepageStarsCanvas({ className, maxSize }) {
   const amountOfStarsToRender = 100;
   const canvasDots = [];
   const canvasRef = useRef();
@@ -26,7 +26,13 @@ export default function HomepageStarsCanvas() {
       let canvasDotX = Math.floor(Math.random() * canvas.offsetWidth);
       let canvasDotY = Math.floor(Math.random() * canvas.offsetWidth);
       canvasDots.push([canvasDotX, canvasDotY]);
-      context.arc(canvasDotX, canvasDotY, Math.random() * 4, 0, 2 * Math.PI);
+      context.arc(
+        canvasDotX,
+        canvasDotY,
+        Math.random() * maxSize,
+        0,
+        2 * Math.PI
+      );
       context.stroke();
       context.fill();
     }
@@ -35,7 +41,7 @@ export default function HomepageStarsCanvas() {
     <canvas
       onMouseMove={handleMouseMove}
       ref={canvasRef}
-      className="z-[0] absolute"
+      className={"-z-10 absolute " + className}
     ></canvas>
   );
 }

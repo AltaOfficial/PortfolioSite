@@ -5,7 +5,7 @@ export default function Navbar({ projectsRef, previousHackathonsRef }) {
   return (
     <div className="navbar flex place-content-between place-items-center px-5 py-8">
       <div>
-        <p>Jaedonfarr.dev</p>
+        <Link href={"/"}>Jaedonfarr.dev</Link>
       </div>
 
       <div className="flex place-items-center">
@@ -14,7 +14,8 @@ export default function Navbar({ projectsRef, previousHackathonsRef }) {
             href="#"
             className="text-center flex relative hover-glow ease-in-out duration-300"
           >
-            About Me
+            My tech <br />
+            stacks
           </Link>
           <button
             onClick={() => {
