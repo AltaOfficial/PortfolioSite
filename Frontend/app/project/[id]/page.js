@@ -31,16 +31,16 @@ export default function Project() {
             built it This software was built using Django for the backend
             functionality, BeautifulSoup for the web scrapers handling the
             original inputted text, Postgres for the article database, Bootstrap
-            for the UI and front-end development, and OpenAI's API for the AI
+            for the UI and front-end development, and OpenAIs API for the AI
             component. Accomplishments that Im proud of We are proud to announce
             that the product currently functions as intended, and we firmly
-            believe it can make a difference in students' academic journeys. Our
+            believe it can make a difference in students academic journeys. Our
             hope is that this tool will aid students in enhancing their literacy
             skills and fostering a passion for reading. Furthermore, by
             utilizing real online articles, Maestro has the potential to
             significantly improve overall knowledge of current events.
             Challenges Faced One of the main challenges was integrating the
-            website with our club's existing systems. We had to ensure seamless
+            website with our clubs existing systems. We had to ensure seamless
             data flow between the website and our membership database.
             Additionally, optimizing the website for performance and
             accessibility was a top priority throughout the development process.

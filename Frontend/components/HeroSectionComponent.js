@@ -6,7 +6,7 @@ export default function HeroSectionComponent({ projectsRef }) {
   return (
     <div className="flex flex-col place-items-center place-content-center h-[calc(100%-15rem)]">
       <div className="flex place-items-center">
-        <p className="font-bold text-4xl">Hi I'm Jaedon</p>
+        <p className="font-bold text-4xl">Hi I&apos;m Jaedon</p>
         <HandWaveLogoSvg />
       </div>
       <p className="font-medium text-xl">I like coding and stuff.</p>
