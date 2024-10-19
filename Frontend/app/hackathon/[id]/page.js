@@ -5,7 +5,7 @@ import { useRef } from "react";
 import HomepageStarsCanvas from "@/components/HomepageStarsCanvas";
 import Markdown from "react-markdown";
 
-export default function Project() {
+export default function Hackathon() {
   const projectsRef = useRef();
   const previousHackathonsRef = useRef();
   return (
