@@ -2,18 +2,18 @@ import Link from "next/link";
 import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 
 export default function hackathons() {
-  const tableInstance = useReactTable({
-    columns,
-    data,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
   const columns = [
     {
       accessorKey: "hackathonName",
       header: "Hackathon Name",
     },
   ];
+
+  const tableInstance = useReactTable({
+    columns,
+    data,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   return (
     <div>
