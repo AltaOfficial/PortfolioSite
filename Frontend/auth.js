@@ -1,7 +1,6 @@
 import { SupabaseAdapter } from "@auth/supabase-adapter";
 import NextAuth from "next-auth";
 import Github from "next-auth/providers/github";
-import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
