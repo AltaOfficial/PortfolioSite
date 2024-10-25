@@ -20,6 +20,26 @@ body {
   font-family: "Montserrat", sans-serif;
 }
 
+a {
+  color: #0098ff;
+}
+
+h1 {
+  font-size: xx-large;
+}
+
+h2 {
+  font-size: x-large;
+}
+
+h3 {
+  font-size: large;
+}
+
+blockquote {
+  fill: white;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
