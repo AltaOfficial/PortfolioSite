@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import { FiStar, FiTrash, FiX } from "react-icons/fi";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useDropzone } from "react-dropzone";
 
 /*
 Total things needed:
@@ -23,13 +24,22 @@ export default function createUpdateProject({
   shortDescription,
   markdownDescription,
   dates,
+  techStack,
 }) {
   const [bodyText, setBodyText] = useState("");
+  const [techStackState, setTechStackState] = useState(
+    techStack ? techStack : [{ content: "React", featured: false }]
+  );
   const body = useRef(null);
   return (
     <div className="p-8">
       <p className="text-5xl font-semibold mb-8">New Project</p>
-      <form className="">
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+        }}
+        className=""
+      >
         <div className="grid grid-cols-2 gap-64">
           <div>
             <div className="grid grid-cols-2 gap-2">
@@ -85,53 +95,56 @@ export default function createUpdateProject({
                   />
                 </div>
               </div>
-              <div className="flex flex-col gap-2 ">
+              <div className="flex flex-col gap-2 w-[31rem]">
                 <label>Tech Stack</label>
                 <div className="h-[7rem] border-2 border-white rounded-md overflow-y-scroll">
-                  <div className="flex p-2">
-                    <p className="bg-white rounded-md text-black p-1  flex place-items-center gap-1 font-semibold mr-1">
-                      Hi
-                      <FiStar className="hover:cursor-pointer" />
-                      <FiX className="hover:scale-110 hover:cursor-pointer" />
-                    </p>
-                    <p className="bg-white rounded-md text-black p-1  flex place-items-center gap-1 font-semibold mr-1">
-                      Hi
-                      <FiStar className="hover:cursor-pointer" />
-                      <FiX className="hover:scale-110 hover:cursor-pointer" />
-                    </p>
-                    <p className="bg-white rounded-md text-black p-1  flex place-items-center gap-1 font-semibold mr-1">
-                      Hi
-                      <FiStar className="hover:cursor-pointer" />
-                      <FiX className="hover:scale-110 hover:cursor-pointer" />
-                    </p>
-                    <p className="bg-white rounded-md text-black p-1  flex place-items-center gap-1 font-semibold mr-1">
-                      Hi
-                      <FiStar className="hover:cursor-pointer" />
-                      <FiX className="hover:scale-110 hover:cursor-pointer" />
-                    </p>
-                    <p className="bg-white rounded-md text-black p-1  flex place-items-center gap-1 font-semibold mr-1">
-                      Hi
-                      <FiStar className="hover:cursor-pointer" />
-                      <FiX className="hover:scale-110 hover:cursor-pointer" />
-                    </p>
-                    <p className="bg-white rounded-md text-black p-1  flex place-items-center gap-1 font-semibold mr-1">
-                      Hi
-                      <FiStar className="hover:cursor-pointer" />
-                      <FiX className="hover:scale-110 hover:cursor-pointer" />
-                    </p>
-                    <p className="bg-white rounded-md text-black p-1  flex place-items-center gap-1 font-semibold mr-1">
-                      Hi
-                      <FiStar className="hover:cursor-pointer" />
-                      <FiX className="hover:scale-110 hover:cursor-pointer" />
-                    </p>
-                    <p className="bg-white rounded-md text-black p-1  flex place-items-center gap-1 font-semibold mr-1">
-                      Hi
-                      <FiStar className="hover:cursor-pointer" />
-                      <FiX className="hover:scale-110 hover:cursor-pointer" />
-                    </p>
+                  <div className="flex p-2 flex-wrap gap-2">
+                    {techStackState.map((techStackItem, index) => (
+                      <p
+                        key={index}
+                        className="bg-white rounded-md text-black p-1  flex place-items-center gap-1 font-semibold mr-1"
+                      >
+                        {techStackItem.content}
+                        <FiStar
+                          onClick={() => {
+                            let tempTechStackArray = [...techStackState];
+                            tempTechStackArray[index].featured =
+                              !techStackItem.featured;
+                            setTechStackState(tempTechStackArray);
+                          }}
+                          fill={techStackItem.featured ? "black" : "none"}
+                          className="hover:cursor-pointer"
+                        />
+                        <FiX
+                          onClick={() => {
+                            let tempTechStackArray = [...techStackState];
+                            tempTechStackArray.splice(index, 1);
+                            setTechStackState(tempTechStackArray);
+                          }}
+                          className="hover:scale-110 hover:cursor-pointer"
+                        />
+                      </p>
+                    ))}
                     <input
+                      onChange={(event) => {
+                        if (event.target.value.includes(",")) {
+                          event.target.value
+                            .split(",")
+                            .filter((item) => item != "")
+                            .forEach((tempTextItem) => {
+                              setTechStackState([
+                                ...techStackState,
+                                {
+                                  content: tempTextItem,
+                                  featured: false,
+                                },
+                              ]);
+                            });
+                          event.target.value = "";
+                        }
+                      }}
                       type="text"
-                      className="bg-black flex p-1 font-semibold focus:outline-none"
+                      className="bg-black flex w-24 p-1 font-semibold focus:outline-none"
                     />
                   </div>
                 </div>
@@ -142,6 +155,7 @@ export default function createUpdateProject({
               <label>Body</label>
               <div className="border-2 border-white rounded-md p-2">
                 <button
+                  type="button"
                   onClick={(event) => {
                     event.preventDefault();
                     let cursorPositon = body.current.selectionStart;
@@ -181,11 +195,12 @@ export default function createUpdateProject({
           </div>
           <div className="">
             <div className="flex gap-10">
-              <div className="w-56 h-56 border-2 border-white rounded-md place-items-center place-content-center hover:cursor-pointer">
+              <div className="w-56 h-56 border-2 border-white rounded-md flex flex-col place-items-center place-content-center hover:cursor-pointer">
                 <div>
                   <p>Image/Video Upload</p>
                   <p className="text-center">(Drag and drop)</p>
                 </div>
+                <input type="file" />
               </div>
               <div className="flex flex-col gap-2 h-56 overflow-y-scroll">
                 <div className="flex flex-col gap-2">
