@@ -1,9 +1,9 @@
 "use client";
 import React, { useRef, useState } from "react";
-import { FiStar, FiTrash, FiX } from "react-icons/fi";
+import { FiStar, FiX } from "react-icons/fi";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { useDropzone } from "react-dropzone";
+import ImageUpload from "@/components/ImageUpload";
 
 /*
 Total things needed:
@@ -38,7 +38,6 @@ export default function createUpdateProject({
         onSubmit={(event) => {
           event.preventDefault();
         }}
-        className=""
       >
         <div className="grid grid-cols-2 gap-64">
           <div>
@@ -193,40 +192,8 @@ export default function createUpdateProject({
               </div>
             </div>
           </div>
-          <div className="">
-            <div className="flex gap-10">
-              <div className="w-56 h-56 border-2 border-white rounded-md flex flex-col place-items-center place-content-center hover:cursor-pointer">
-                <div>
-                  <p>Image/Video Upload</p>
-                  <p className="text-center">(Drag and drop)</p>
-                </div>
-                <input type="file" />
-              </div>
-              <div className="flex flex-col gap-2 h-56 overflow-y-scroll">
-                <div className="flex flex-col gap-2">
-                  <div className="border-2 border-white w-44 h-24 rounded-md relative">
-                    <div className="flex flex-col absolute right-0 p-1">
-                      <FiStar size={22} />
-                      <FiTrash size={22} />
-                    </div>
-                  </div>
-                  <div className="border-2 border-white w-44 h-24 rounded-md relative">
-                    <div className="flex flex-col absolute right-0 p-1">
-                      <FiStar size={22} />
-                      <FiTrash size={22} />
-                    </div>
-                  </div>
-                  <div className="border-2 border-white w-44 h-24 rounded-md relative">
-                    <div className="flex flex-col absolute right-0 p-1">
-                      <FiStar size={22} />
-                      <FiTrash size={22} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <p className="mt-2">Uploading hi.mp4 - 46%</p>
+          <div>
+            <ImageUpload />
 
             <div className="flex flex-col mt-36">
               <label>Markdown</label>

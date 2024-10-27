@@ -7,7 +7,7 @@ export default function TechStackSectionComponent({ techStackRefs }) {
         My Tech Stack and Experience
       </p>
       <div>
-        <TechStacksComponent></TechStacksComponent>
+        <TechStacksComponent />
       </div>
     </div>
   );
