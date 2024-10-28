@@ -10,6 +10,8 @@ export async function getAllProjects() {
   }
 }
 
+export async function getProject() {}
+
 export async function getAllHackathons() {
   const { data, error } = await supabase.from("hackathons").select();
   if (error) {
