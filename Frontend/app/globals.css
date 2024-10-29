@@ -5,6 +5,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* color-scheme: dark; */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -36,9 +37,32 @@ blockquote {
   fill: white;
 }
 
+@layer base {
+  ::-webkit-scrollbar-track {
+    background: black !important;
+    display: none;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: black !important;
+    display: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 100vh;
+    border: 2px solid #f6f7ed;
   }
 }
 

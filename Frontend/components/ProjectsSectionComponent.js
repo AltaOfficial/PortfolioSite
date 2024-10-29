@@ -23,7 +23,7 @@ export default function ProjectsSectionComponent({ projectsRef }) {
     <div className="mt-32 ml-5" ref={projectsRef}>
       <p className="text-6xl font-semibold mb-10">My Projects</p>
       {projects && (
-        <div className="flex gap-4">
+        <div className="flex gap-4 overflow-x-auto pb-10">
           {projects.map((project, index) => (
             <ProjectComponent
               title={project.title}

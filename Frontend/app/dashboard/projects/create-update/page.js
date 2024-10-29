@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import { useRef, useState, useFormState } from "react";
 import { FiStar, FiX } from "react-icons/fi";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -29,6 +29,8 @@ export default function createUpdateProject({
   techStack,
   projectId,
 }) {
+  const initialState = {};
+  const [formState, formAction] = useFormState(uploadProject, initialState);
   const [titleState, setTitleState] = useState(title ? title : "");
   const [dateState, setDate] = useState({ from: "", to: "" });
   const [shortDescriptionState, setShortDescriptionState] = useState(
@@ -83,7 +85,7 @@ export default function createUpdateProject({
             return;
           }
 
-          console.log(filesState);
+          console.log(JSON.parse(JSON.stringify(filesState)));
 
           setIsLoading(true);
           uploadProject({
@@ -98,6 +100,17 @@ export default function createUpdateProject({
             liveSiteLink: liveSiteLinkState,
             repoLink: repoLinkState,
           }).then(({ data, error }) => {
+            if (data) {
+              toast.open({
+                title: "Success",
+                message: "Successfully created new project",
+              });
+            } else if (error) {
+              toast.open({
+                title: "Error occured",
+                message: error.message,
+              });
+            }
             setIsLoading(false);
           });
         }}

@@ -24,6 +24,7 @@ export async function uploadProject({
     },
   });
   console.log(files);
+  console.log(files[0]);
   await s3.send(
     new PutObjectCommand({
       Bucket: "jaedon-portfolio-site-bucket",
@@ -41,12 +42,12 @@ export async function uploadProject({
 
     if (error) {
       console.error(error.message);
+      return { error };
     }
 
     if (data) {
       console.log(data);
+      return { data };
     }
-
-    return { data, error };
   }
 }
