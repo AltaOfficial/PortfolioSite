@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState, useFormState } from "react";
+import { useRef, useState } from "react";
 import { FiStar, FiX } from "react-icons/fi";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -21,6 +21,7 @@ Project markdown full explaination
 
 */
 
+// params should be passed in from the url
 export default function createUpdateProject({
   title,
   shortDescription,
@@ -29,92 +30,49 @@ export default function createUpdateProject({
   techStack,
   projectId,
 }) {
-  const initialState = {};
-  const [formState, formAction] = useFormState(uploadProject, initialState);
-  const [titleState, setTitleState] = useState(title ? title : "");
-  const [dateState, setDate] = useState({ from: "", to: "" });
-  const [shortDescriptionState, setShortDescriptionState] = useState(
-    shortDescription ? shortDescription : ""
-  );
-  const [liveSiteLinkState, setLiveSiteLinkState] = useState("");
-  const [repoLinkState, setRepoLinkState] = useState("");
+  const initialState = {
+    toastTitle: "",
+    toastMessage: "",
+    fieldValues: {
+      title: "erm...",
+      date: { from: "2023-12-12", to: "" },
+      shortDescription: "",
+      liveSiteLink: "",
+      repoLink: "",
+      techStack: techStack
+        ? techStack
+        : [{ content: "React", featured: false }],
+    },
+  };
+  const [isLoading, setIsLoading] = useState();
   const [techStackState, setTechStackState] = useState(
     techStack ? techStack : [{ content: "React", featured: false }]
   );
-  const [bodyTextState, setBodyTextState] = useState("");
-  const [filesState, setFilesState] = useState([]);
+  const [bodyTextState, setBodyTextState] = useState("erm... what the sigma");
   const body = useRef(null);
-  const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
+
   return (
     <div className="p-8">
       <p className="text-5xl font-semibold mb-8">New Project</p>
       <form
-        onSubmit={(event) => {
-          event.preventDefault();
-
-          if (!titleState) {
+        action={(formData) => {
+          console.log(formData.getAll("files"));
+          uploadProject(formData).then(({ title, message }) => {
             toast.open({
-              title: "Missing Fields",
-              message: "Title is a required field",
+              title: title,
+              message: message,
             });
-            return;
-          } else if (!bodyTextState) {
-            toast.open({
-              title: "Missing Fields",
-              message: "Body is a required field",
-            });
-            return;
-          } else if (!shortDescriptionState) {
-            toast.open({
-              title: "Missing Fields",
-              message: "Paragraph explainer is a required field",
-            });
-            return;
-          } else if (!dateState.from) {
-            toast.open({
-              title: "Missing Fields",
-              message: "From date is a required field",
-            });
-            return;
-          } else if (filesState.length == 0) {
-            toast.open({
-              title: "Missing Fields",
-              message: "Atleast 1 project image is required",
-            });
-            return;
-          }
-
-          console.log(JSON.parse(JSON.stringify(filesState)));
-
-          setIsLoading(true);
-          uploadProject({
-            title: titleState,
-            elevatorPitch: shortDescriptionState,
-            fullMarkdownDescription: bodyTextState,
-            projectId: projectId ? projectId : "",
-            dateFrom: dateState.from,
-            dateTo: dateState.to,
-            imageFiles: JSON.stringify(filesState),
-            techStackTags: techStackState,
-            liveSiteLink: liveSiteLinkState,
-            repoLink: repoLinkState,
-          }).then(({ data, error }) => {
-            if (data) {
-              toast.open({
-                title: "Success",
-                message: "Successfully created new project",
-              });
-            } else if (error) {
-              toast.open({
-                title: "Error occured",
-                message: error.message,
-              });
-            }
-            setIsLoading(false);
           });
         }}
       >
+        <input
+          name="projectId"
+          type="text"
+          value={projectId}
+          readOnly
+          className="hidden"
+        />
         <div className="grid grid-cols-2 gap-64">
           <div>
             <div className="grid grid-cols-2 gap-2">
@@ -124,8 +82,7 @@ export default function createUpdateProject({
                   type="text"
                   className="bg-black border-2 border-white rounded-md"
                   name="title"
-                  value={titleState}
-                  onChange={(event) => setTitleState(event.target.value)}
+                  defaultValue={initialState.fieldValues.title}
                 />
               </div>
 
@@ -136,22 +93,13 @@ export default function createUpdateProject({
                     type="date"
                     className="bg-black border-2 border-white rounded-md"
                     name="from"
-                    value={dateState.from}
-                    onChange={(event) =>
-                      setDate({
-                        from: event.target.value,
-                        to: dateState.to,
-                      })
-                    }
+                    defaultValue={initialState.fieldValues.date.from}
                   />
                   <input
                     type="date"
                     className="bg-black border-2 border-white rounded-md"
                     name="to"
-                    value={dateState.to}
-                    onChange={(event) =>
-                      setDate({ from: dateState.from, to: event.target.value })
-                    }
+                    defaultValue={initialState.fieldValues.date.to}
                   />
                 </div>
               </div>
@@ -163,10 +111,7 @@ export default function createUpdateProject({
                   type="text"
                   className="bg-black border-2 border-white rounded-md"
                   name="shortDescription"
-                  value={shortDescriptionState}
-                  onChange={(event) =>
-                    setShortDescriptionState(event.target.value)
-                  }
+                  defaultValue={initialState.fieldValues.shortDescription}
                 />
               </div>
               <div className="flex flex-col gap-5">
@@ -176,20 +121,16 @@ export default function createUpdateProject({
                     type="text"
                     className="bg-black border-2 border-white rounded-md"
                     name="liveSiteLink"
-                    value={liveSiteLinkState}
-                    onChange={(event) =>
-                      setLiveSiteLinkState(event.target.value)
-                    }
+                    defaultValue={initialState.fieldValues.liveSiteLink}
                   />
                 </div>
                 <div className="flex flex-col">
-                  <p>Repo link</p>
+                  <label>Repo link</label>
                   <input
                     type="text"
                     className="bg-black border-2 border-white rounded-md"
                     name="repoLink"
-                    value={repoLinkState}
-                    onChange={(event) => setRepoLinkState(event.target.value)}
+                    defaultValue={initialState.fieldValues.repoLink}
                   />
                 </div>
               </div>
@@ -223,6 +164,13 @@ export default function createUpdateProject({
                         />
                       </p>
                     ))}
+                    <input
+                      type="text"
+                      value={techStackState}
+                      name="techStack"
+                      readOnly={true}
+                      className="hidden"
+                    />
                     <input
                       onChange={(event) => {
                         event.preventDefault();
@@ -286,17 +234,13 @@ export default function createUpdateProject({
                     ref={body}
                     className="h-[23rem] focus:outline-none border-t-2 p-1 border-white bg-black"
                     rows={18}
-                    contentEditable="true"
                   />
                 </div>
               </div>
             </div>
           </div>
           <div>
-            <ImageUpload
-              filesState={filesState}
-              setFilesState={setFilesState}
-            />
+            <ImageUpload />
 
             <div className="flex flex-col mt-44">
               <label>Markdown</label>

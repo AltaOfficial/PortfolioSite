@@ -1,10 +1,12 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 import { FiStar, FiTrash } from "react-icons/fi";
 
-export default function ImageUpload({ filesState, setFilesState }) {
+export default function ImageUpload() {
+  const [filesState, setFilesState] = useState([]);
+  const hiddenFileInputRef = useRef();
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles) => {
       setFilesState([
@@ -16,6 +18,13 @@ export default function ImageUpload({ filesState, setFilesState }) {
           })
         ),
       ]);
+
+      const dataTransfer = new DataTransfer();
+      acceptedFiles.forEach((file) => {
+        dataTransfer.items.add(file);
+      });
+      hiddenFileInputRef.current.files = dataTransfer.files;
+      //console.log(hiddenFileInputRef.current.files);
     },
   });
 
@@ -30,7 +39,20 @@ export default function ImageUpload({ filesState, setFilesState }) {
         {...getRootProps()}
         className="w-56 h-56 border-2 border-dashed border-white rounded-md flex flex-col place-items-center place-content-center hover:cursor-pointer"
       >
-        <input {...getInputProps()} />
+        <input
+          name="filesDetails"
+          value={filesState}
+          readOnly
+          className="hidden"
+        />
+        <input
+          name="files"
+          ref={hiddenFileInputRef}
+          type="file"
+          multiple
+          className="hidden"
+        />
+        <input {...getInputProps()} multiple={true} />
         <div>
           <p>Image/Video Upload</p>
           <p className="text-center">(Drag and drop)</p>
@@ -69,11 +91,15 @@ export default function ImageUpload({ filesState, setFilesState }) {
                 />
                 <FiTrash
                   onClick={() => {
-                    setFilesState(
-                      filesState.filter(
-                        (fileItem) => fileItem.name != file.name
-                      )
+                    const dataTransfer = new DataTransfer();
+                    const newFiles = filesState.filter(
+                      (fileItem) => fileItem.name != file.name
                     );
+                    setFilesState(newFiles);
+                    newFiles.forEach((file) => {
+                      dataTransfer.items.add(file);
+                    });
+                    hiddenFileInputRef.current.files = dataTransfer.files;
                   }}
                   className="hover:cursor-pointer"
                   size={22}
