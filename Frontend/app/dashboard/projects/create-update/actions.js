@@ -15,6 +15,12 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 // repoLink,
 
 export async function uploadProject(formData) {
+  if (!formData.get("filesDetails")) {
+    return {
+      title: "Missing Fields",
+      message: "Atleast one image must be uploaded",
+    };
+  }
   const filesDetails = JSON.parse(formData.get("filesDetails"));
   if (!formData.get("title")) {
     return {
@@ -82,6 +88,7 @@ export async function uploadProject(formData) {
       {
         title: formData.get("title"),
         thumbnail_url: `https://${process.env.NEXT_AWS_S3_BUCKET_NAME}.s3.${process.env.NEXT_AWS_S3_REGION}.amazonaws.com/${thumbnailFile.fileName}`,
+        tags: formData.get("techStack"),
       },
     ]); // Finish this
 
