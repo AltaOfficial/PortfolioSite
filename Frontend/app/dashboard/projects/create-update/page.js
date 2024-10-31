@@ -57,7 +57,6 @@ export default function createUpdateProject({
       <p className="text-5xl font-semibold mb-8">New Project</p>
       <form
         action={(formData) => {
-          console.log(formData.getAll("files"));
           uploadProject(formData).then(({ title, message }) => {
             toast.open({
               title: title,

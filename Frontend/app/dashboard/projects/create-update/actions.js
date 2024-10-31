@@ -1,10 +1,6 @@
 "use server";
 import supabase from "@/database/supabaseClient";
-import {
-  S3Client,
-  PutObjectCommand,
-  GetObjectCommand,
-} from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 // TODO: just pass in formData
 // title,
@@ -19,9 +15,7 @@ import {
 // repoLink,
 
 export async function uploadProject(formData) {
-  console.log(formData.getAll("files")[0]);
-  console.log(formData.get("filesDetails"));
-  //console.log(formData.getAll("files").filter((file) => file.featured == true));
+  const filesDetails = JSON.parse(formData.get("filesDetails"));
   if (!formData.get("title")) {
     return {
       title: "Missing Fields",
@@ -48,8 +42,11 @@ export async function uploadProject(formData) {
       message: "Atleast 1 project image is required",
     };
   } else if (
-    formData.getAll("files").filter((file) => file.featured == true).length == 0
+    filesDetails.filter((fileDetail) => fileDetail.featured == true).length == 0
   ) {
+    console.log(
+      filesDetails.filter((fileDetail) => fileDetail.featured == true).length
+    );
     return {
       title: "Missing Fields",
       message: "Atleast 1 project image has to be stared",
@@ -69,7 +66,7 @@ export async function uploadProject(formData) {
     console.log(file);
     await s3.send(
       new PutObjectCommand({
-        Bucket: NEXT_AWS_S3_BUCKET_NAME,
+        Bucket: process.env.NEXT_AWS_S3_BUCKET_NAME,
         Key: file.name,
         Body: buffer,
         ContentType: file.type,
@@ -80,19 +77,21 @@ export async function uploadProject(formData) {
   // check if project id was provided, if so, update project record, if not, create a new record
   if (formData.get("projectId")) {
   } else {
-    //let thumbnailFile = formData.getAll("files");
+    let thumbnailFile = filesDetails.filter((file) => file.featured == true)[0];
     const { data, error } = await supabase.from("projects").insert([
       {
         title: formData.get("title"),
-        thumbnail_url: `https://${process.env.NEXT_AWS_S3_BUCKET_NAME}.s3.${NEXT_AWS_S3_REGION}.amazonaws.com/${thumbnailFile.name}`,
+        thumbnail_url: `https://${process.env.NEXT_AWS_S3_BUCKET_NAME}.s3.${process.env.NEXT_AWS_S3_REGION}.amazonaws.com/${thumbnailFile.fileName}`,
       },
     ]); // Finish this
 
     if (error) {
+      console.log("no success");
       return { title: error.name, message: error.message };
     }
 
     if (data) {
+      console.log("success");
       return { title: "Success", message: "Project successfully created" };
     }
   }

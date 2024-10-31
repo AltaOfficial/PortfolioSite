@@ -6,6 +6,7 @@ import { FiStar, FiTrash } from "react-icons/fi";
 
 export default function ImageUpload() {
   const [filesState, setFilesState] = useState([]);
+  const [filesDetails, setFilesDetails] = useState("");
   const hiddenFileInputRef = useRef();
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles) => {
@@ -18,13 +19,22 @@ export default function ImageUpload() {
           })
         ),
       ]);
+      const tempFiles = filesDetails ? JSON.parse(filesDetails) : [];
+      setFilesDetails(
+        JSON.stringify([
+          ...tempFiles,
+          ...acceptedFiles.map((file) => ({
+            fileName: file.name,
+            featured: false,
+          })),
+        ])
+      );
 
       const dataTransfer = new DataTransfer();
       acceptedFiles.forEach((file) => {
         dataTransfer.items.add(file);
       });
       hiddenFileInputRef.current.files = dataTransfer.files;
-      //console.log(hiddenFileInputRef.current.files);
     },
   });
 
@@ -41,7 +51,8 @@ export default function ImageUpload() {
       >
         <input
           name="filesDetails"
-          value={filesState}
+          value={filesDetails}
+          type="text"
           readOnly
           className="hidden"
         />
@@ -73,7 +84,7 @@ export default function ImageUpload() {
               <div className="flex flex-col absolute right-0 p-1">
                 <FiStar
                   fill={file.featured == true ? "white" : "none"}
-                  onClick={() =>
+                  onClick={() => {
                     setFilesState(
                       filesState.map((fileItem) => {
                         if (fileItem.name == file.name) {
@@ -84,8 +95,24 @@ export default function ImageUpload() {
                           return fileItem;
                         }
                       })
-                    )
-                  }
+                    );
+                    const tempFiles = filesDetails
+                      ? JSON.parse(filesDetails)
+                      : [];
+                    setFilesDetails(
+                      JSON.stringify(
+                        tempFiles.map((fileItem) => {
+                          if (fileItem.fileName == file.name) {
+                            fileItem.featured = !fileItem.featured;
+                            return fileItem;
+                          } else {
+                            fileItem.featured = false;
+                            return fileItem;
+                          }
+                        })
+                      )
+                    );
+                  }}
                   className="hover:cursor-pointer"
                   size={22}
                 />
@@ -96,6 +123,16 @@ export default function ImageUpload() {
                       (fileItem) => fileItem.name != file.name
                     );
                     setFilesState(newFiles);
+                    const tempFiles = filesDetails
+                      ? JSON.parse(filesDetails)
+                      : [];
+                    setFilesDetails(
+                      JSON.stringify(
+                        tempFiles.filter(
+                          (fileItem) => fileItem.fileName != file.name
+                        )
+                      )
+                    );
                     newFiles.forEach((file) => {
                       dataTransfer.items.add(file);
                     });
