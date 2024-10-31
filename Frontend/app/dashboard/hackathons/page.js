@@ -9,16 +9,16 @@ export default function Hackathons() {
     },
   ];
 
-  const tableInstance = useReactTable({
-    columns,
-    data,
-    getCoreRowModel: getCoreRowModel(),
-  });
+  // const tableInstance = useReactTable({
+  //   columns,
+  //   data,
+  //   getCoreRowModel: getCoreRowModel(),
+  // });
 
   return (
     <div>
       <div>
-        <Link href="">+ New hackathon</Link>
+        <Link href="/dashboard/hackathons/create-update">+ New hackathon</Link>
       </div>
       <table></table>
     </div>
