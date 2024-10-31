@@ -1,5 +1,5 @@
 import React from "react";
 
-export default function createHackathon() {
+export default function CreateHackathon() {
   return <div></div>;
 }

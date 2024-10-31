@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 
-export default function hackathons() {
+export default function Hackathons() {
   const columns = [
     {
       accessorKey: "hackathonName",

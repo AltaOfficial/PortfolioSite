@@ -22,7 +22,7 @@ Project markdown full explaination
 */
 
 // params should be passed in from the url
-export default function createUpdateProject({
+export default function CreateUpdateProject({
   title,
   shortDescription,
   bodyText,
