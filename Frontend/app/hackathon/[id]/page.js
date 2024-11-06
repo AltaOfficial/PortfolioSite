@@ -1,9 +1,8 @@
 "use client";
 import Navbar from "@/components/Navbar";
-import ProjectOverviewComponent from "@/components/ProjectOverviewComponent";
 import { useRef } from "react";
 import HomepageStarsCanvas from "@/components/HomepageStarsCanvas";
-import Markdown from "react-markdown";
+import ReactMarkdown from "react-markdown";
 
 export default function Hackathon() {
   const projectsRef = useRef();
@@ -16,7 +15,6 @@ export default function Hackathon() {
       />
       <HomepageStarsCanvas maxSize={2} />
       <div className="px-36">
-        <ProjectOverviewComponent />
         <div className="mt-20">
           <p>
             Inspiration As a team with experience in early childhood education
