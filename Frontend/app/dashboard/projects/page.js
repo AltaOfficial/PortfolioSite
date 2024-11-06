@@ -1,27 +1,34 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getAllProjects } from "@/app/actions";
+import { getAllProjects, deleteProjects, getProject } from "@/app/actions";
 import {
   useReactTable,
   getCoreRowModel,
   flexRender,
 } from "@tanstack/react-table";
+import { useToast } from "@/components/toast/toastContext";
+import { useRouter } from "next/navigation";
 
 export default function Projects() {
   const [data, setData] = useState([]);
   const [rowSelection, setRowSelection] = useState([]);
+  const toast = useToast();
+  const router = useRouter();
 
-  useEffect(() => {
+  function setProjectData() {
     getAllProjects().then(({ data }) => {
       let projectsTableData = data.map((project, index) => {
         return {
-          projectName: project.title,
+          projectName: { title: project.title, id: project.id },
         };
       });
-      console.log(data);
       setData(projectsTableData);
     });
+  }
+
+  useEffect(() => {
+    setProjectData();
   }, []);
 
   const columns = [
@@ -52,7 +59,12 @@ export default function Projects() {
     {
       accessorKey: "projectName",
       header: "Project Name",
-      cell: (props) => <div>{props.getValue()}</div>,
+      cell: (props) => (
+        <div>
+          <p>{props.getValue()?.title}</p>
+          <p className="text-xs"> id: {props.getValue()?.id}</p>
+        </div>
+      ),
     },
   ];
 
@@ -63,6 +75,7 @@ export default function Projects() {
       rowSelection,
     },
     enableRowSelection: true,
+    getRowId: (row) => row.projectName.id,
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -70,28 +83,39 @@ export default function Projects() {
   return (
     <div className="mt-4">
       <div>
-        <Link
-          href="/dashboard/projects/create-update"
-          className="p-2 bg-white rounded-md text-black font-semibold m-2"
-        >
-          + New Project
+        <Link href="/dashboard/projects/create-update">
+          <button className="p-2 bg-white rounded-md text-black font-semibold mx-2 my-1">
+            + New Project
+          </button>
         </Link>
-        {console.log(Object.keys(rowSelection))}
-        {Object.keys(rowSelection).length > 0 && (
-          <Link
-            href=""
-            className="p-2 bg-[#ff4233] rounded-md text-white font-semibold m-2"
-          >
-            Delete Project(s)
-          </Link>
-        )}
         {Object.keys(rowSelection).length == 1 && (
-          <Link
-            href=""
-            className="p-2 bg-[#33c8ff] rounded-md text-white font-semibold m-2"
+          <button
+            onClick={() => {
+              getProject(Object.keys(rowSelection)[0]).then((project) => {
+                router.push(
+                  `/dashboard/projects/create-update?title=${project.title}`
+                );
+              });
+            }}
+            className="p-2 bg-[#33c8ff] rounded-md text-white font-semibold mx-2 my-1"
           >
             Edit Project
-          </Link>
+          </button>
+        )}
+        {Object.keys(rowSelection).length > 0 && (
+          <button
+            onClick={() => {
+              deleteProjects(Object.keys(rowSelection)).then(
+                ({ title, message }) => {
+                  toast.open({ title: title, message: message });
+                }
+              );
+              setProjectData();
+            }}
+            className="p-2 mx-2 my-1 bg-[#ff4233] rounded-md text-white font-semibold"
+          >
+            Delete Project(s)
+          </button>
         )}
       </div>
       <table className="m-3 rounded-lg">

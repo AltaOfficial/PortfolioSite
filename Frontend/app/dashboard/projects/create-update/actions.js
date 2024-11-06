@@ -15,17 +15,33 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 // repoLink,
 
 export async function uploadProject(formData) {
+  let projectImageUrls = [];
   if (!formData.get("filesDetails")) {
     return {
       title: "Missing Fields",
       message: "Atleast one image must be uploaded",
     };
   }
+  if (JSON.parse(formData.get("techStacks")).length == 0) {
+    return {
+      title: "Missing fields",
+      message: "There must be atleast one tech stack item",
+    };
+  }
+  const techStacks = JSON.parse(formData.get("techStacks"));
   const filesDetails = JSON.parse(formData.get("filesDetails"));
   if (!formData.get("title")) {
     return {
       title: "Missing Fields",
       message: "Title is a required field",
+    };
+  } else if (
+    formData.get("title").length == 0 ||
+    formData.get("title").length > 16
+  ) {
+    return {
+      title: "Field Invalid",
+      message: "Title must be max 16 characters (spaces incl.)",
     };
   } else if (!formData.get("body")) {
     return {
@@ -50,12 +66,16 @@ export async function uploadProject(formData) {
   } else if (
     filesDetails.filter((fileDetail) => fileDetail.featured == true).length == 0
   ) {
-    console.log(
-      filesDetails.filter((fileDetail) => fileDetail.featured == true).length
-    );
     return {
       title: "Missing Fields",
       message: "Atleast 1 project image has to be stared",
+    };
+  } else if (
+    techStacks.filter((techItem) => techItem.featured == true).length == 0
+  ) {
+    return {
+      title: "Missing Fields",
+      message: "Atleast 1 tech stack item has to be stared",
     };
   }
 
@@ -67,9 +87,11 @@ export async function uploadProject(formData) {
     },
   });
 
-  formData.getAll("files").forEach(async (file) => {
+  for (const file of await formData.getAll("files")) {
     let buffer = Buffer.from(await file.arrayBuffer());
-    console.log(file);
+    projectImageUrls.push(
+      `https://${process.env.NEXT_AWS_S3_BUCKET_NAME}.s3.${process.env.NEXT_AWS_S3_REGION}.amazonaws.com/${file.name}`
+    );
     await s3.send(
       new PutObjectCommand({
         Bucket: process.env.NEXT_AWS_S3_BUCKET_NAME,
@@ -78,26 +100,31 @@ export async function uploadProject(formData) {
         ContentType: file.type,
       })
     );
-  });
+  }
 
   // check if project id was provided, if so, update project record, if not, create a new record
   if (formData.get("projectId")) {
   } else {
     let thumbnailFile = filesDetails.filter((file) => file.featured == true)[0];
-    const { data, error } = await supabase.from("projects").insert([
+    const { error } = await supabase.from("projects").insert([
       {
         title: formData.get("title"),
         thumbnail_url: `https://${process.env.NEXT_AWS_S3_BUCKET_NAME}.s3.${process.env.NEXT_AWS_S3_REGION}.amazonaws.com/${thumbnailFile.fileName}`,
-        tags: formData.get("techStack"),
+        tags: JSON.parse(formData.get("techStacks")),
+        live_site_url: formData.get("liveSiteLink"),
+        repository_url: formData.get("repoLink"),
+        project_images_urls: projectImageUrls,
+        start_date: formData.get("from"),
+        end_date: formData.get("to") ? formData.get("to") : null,
+        body: formData.get("body"),
+        short_description: formData.get("shortDescription"),
       },
     ]); // Finish this
 
     if (error) {
       console.log("no success");
-      return { title: error.name, message: error.message };
-    }
-
-    if (data) {
+      return { title: error.name ? error.name : "", message: error.message };
+    } else {
       console.log("success");
       return { title: "Success", message: "Project successfully created" };
     }

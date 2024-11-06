@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import ImageUpload from "@/components/ImageUpload";
 import { uploadProject } from "./actions";
 import { useToast } from "@/components/toast/toastContext";
+import { useParams } from "next/navigation";
 
 /*
 Total things needed:
@@ -22,17 +23,9 @@ Project markdown full explaination
 */
 
 // params should be passed in from the url
-export default function CreateUpdateProject({
-  title,
-  shortDescription,
-  bodyText,
-  dates,
-  techStack,
-  projectId,
-}) {
+export default function CreateUpdateProject({ techStack, projectId }) {
+  const params = useParams();
   const initialState = {
-    toastTitle: "",
-    toastMessage: "",
     fieldValues: {
       title: "erm...",
       date: { from: "2023-12-12", to: "" },
@@ -165,8 +158,8 @@ export default function CreateUpdateProject({
                     ))}
                     <input
                       type="text"
-                      value={techStackState}
-                      name="techStack"
+                      value={JSON.stringify(techStackState)}
+                      name="techStacks"
                       readOnly={true}
                       className="hidden"
                     />

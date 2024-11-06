@@ -7,6 +7,7 @@ export default function ProjectsSectionComponent({ projectsRef }) {
 
   useEffect(() => {
     const fetchProjects = async () => {
+      // try to use useMemo here, so it doesnt refresh everytime user goes back to the homepage, since data isnt changing that often
       const { data, error } = await getAllProjects();
       if (error) {
         setProjects(null);
@@ -20,17 +21,23 @@ export default function ProjectsSectionComponent({ projectsRef }) {
   }, []);
 
   return (
-    <div className="mt-32 ml-5" ref={projectsRef}>
+    <div className="mt-32 ml-5" id="projects" ref={projectsRef}>
       <p className="text-6xl font-semibold mb-10">My Projects</p>
       {projects && (
         <div className="flex gap-4 overflow-x-auto pb-10">
-          {projects.map((project, index) => (
-            <ProjectComponent
-              title={project.title}
-              thumbnailUrl={project.thumbnail_url}
-              key={index}
-            />
-          ))}
+          {projects
+            .slice()
+            .reverse()
+            .map((project, index) => (
+              <ProjectComponent
+                title={project.title}
+                sentenceExplaination={project.short_description}
+                tags={project.tags}
+                thumbnailUrl={project.thumbnail_url}
+                projectId={project.id}
+                key={index}
+              />
+            ))}
         </div>
       )}
     </div>

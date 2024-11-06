@@ -1,64 +1,131 @@
 "use client";
 import Navbar from "@/components/Navbar";
-import ProjectOverviewComponent from "@/components/ProjectOverviewComponent";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import HomepageStarsCanvas from "@/components/HomepageStarsCanvas";
-import Markdown from "react-markdown";
+import ReactMarkdown from "react-markdown";
+import { useParams } from "next/navigation";
+import { getProject } from "@/app/actions";
+import Link from "next/link";
 
 export default function Project() {
-  const projectsRef = useRef();
-  const previousHackathonsRef = useRef();
+  const fullTechStack = useRef();
+  const params = useParams();
+  const [project, setProject] = useState();
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      // try to use useMemo here, so it doesnt refresh everytime user goes back to the homepage, since data isnt changing that often
+      const { data, error } = await getProject(params.id);
+      if (error) {
+        setProject(null);
+        console.error(error);
+      } else {
+        setProject(data);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
   return (
     <div className="h-dvh">
-      <Navbar
-        projectsRef={projectsRef}
-        previousHackathonsRef={previousHackathonsRef}
-      />
+      <Navbar notOnHomePage={true} />
       <HomepageStarsCanvas maxSize={2} />
       <div className="px-36">
-        <ProjectOverviewComponent />
+        <div className="grid grid-cols-2 gap-10 mt-10">
+          <div className="flex place-content-center">
+            <img
+              className="rounded-lg outline outline-white outline-3"
+              src="https://spreadsimple.com/blog/content/images/2022/08/stripe-main-page.png"
+              alt=""
+              width={"640"}
+              height={"360"}
+            />
+          </div>
+          <div className="pt-5">
+            <div className="mb-6">
+              <p className="text-4xl font-semibold">
+                {project && project.title}
+              </p>
+              <p className="opacity-75">
+                {project &&
+                  `${new Date(project.start_date).getDate()}/${new Date(
+                    project.start_date
+                  ).getMonth()}/${new Date(
+                    project.start_date
+                  ).getFullYear()} - ` +
+                    (project.end_date
+                      ? `${new Date(project.end_date).getDate()}/${new Date(
+                          project.end_date
+                        ).getMonth()}/${new Date(
+                          project.end_date
+                        ).getFullYear()}`
+                      : "Present")}
+              </p>
+            </div>
+            <div className="flex flex-col gap-3">
+              <p className="text-xl">{project && project.short_description}</p>
+              <div className="flex flex-wrap gap-2 font-semibold">
+                {project &&
+                  project.tags
+                    .filter((tag) => tag.featured == true)
+                    .map((tag, index) => (
+                      <p
+                        key={index}
+                        className="bg-[#444A5A] rounded-md p-1 px-2"
+                      >
+                        {tag.content}
+                      </p>
+                    ))}
+                <button
+                  onClick={() => {
+                    fullTechStack.current.scrollIntoView({
+                      behavior: "smooth",
+                    });
+                  }}
+                >
+                  See all...
+                </button>
+              </div>
+              <div className="flex">
+                {project && project.live_site_url && (
+                  <Link
+                    className="text-[#6A99FF] font-semibold"
+                    href={project.live_site_url}
+                    target="_blank"
+                  >
+                    Visit Website
+                  </Link>
+                )}
+                {project && project.repository_url && project.live_site_url && (
+                  <p className="px-2">|</p>
+                )}
+                {project && project.repository_url && (
+                  <Link
+                    className="text-[#6A99FF] font-semibold"
+                    href={project.repository_url}
+                    target="_blank"
+                  >
+                    See Github Repo
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="mt-20">
-          <p>
-            Inspiration As a team with experience in early childhood education
-            and tutoring, we noticed a significant gap in the literacy levels
-            with which students enter college. Given the use of high-level texts
-            in many courses, we aimed to create a tool to assist students in
-            developing these crucial skills by simplifying such texts. What it
-            does As a team with experience in early childhood education and
-            tutoring, we noticed a significant gap in the literacy levels with
-            which students enter college. Given the use of high-level texts in
-            many courses, we aimed to create a tool to assist students in
-            developing these crucial skills by simplifying such texts. How I
-            built it This software was built using Django for the backend
-            functionality, BeautifulSoup for the web scrapers handling the
-            original inputted text, Postgres for the article database, Bootstrap
-            for the UI and front-end development, and OpenAIs API for the AI
-            component. Accomplishments that Im proud of We are proud to announce
-            that the product currently functions as intended, and we firmly
-            believe it can make a difference in students academic journeys. Our
-            hope is that this tool will aid students in enhancing their literacy
-            skills and fostering a passion for reading. Furthermore, by
-            utilizing real online articles, Maestro has the potential to
-            significantly improve overall knowledge of current events.
-            Challenges Faced One of the main challenges was integrating the
-            website with our clubs existing systems. We had to ensure seamless
-            data flow between the website and our membership database.
-            Additionally, optimizing the website for performance and
-            accessibility was a top priority throughout the development process.
-            Future Plans Our plan is to further develop Maestro and tailor it
-            for K-12 education. We envision teachers using this tool to
-            customize articles for each student in their class and adjust the
-            generated problems accordingly. Through this approach, students can
-            enhance their literacy skills at their own pace, while teachers gain
-            insights into individual student performance through the accuracy of
-            the generated questions.
-          </p>
-          <div>
-            <p className="text-2xl">Full tech stack</p>
-            <div className="flex gap-2 font-semibold">
-              <p className="bg-[#444A5A] rounded-md p-1 px-2">Next.js</p>
-              <p className="bg-[#444A5A] rounded-md p-1 px-2">React</p>
-              <p className="bg-[#444A5A] rounded-md p-1 px-2">Tailwindcss</p>
+          <ReactMarkdown>{project && project.body}</ReactMarkdown>
+          <div className="h-7 mt-10">
+            <p className="text-2xl" ref={fullTechStack}>
+              Full tech stack
+            </p>
+            <div className="flex gap-2 font-semibold pb-10">
+              {project &&
+                project.tags.map((tag, index) => (
+                  <p key={index} className="bg-[#444A5A] rounded-md p-1 px-2">
+                    {tag.content}
+                  </p>
+                ))}
             </div>
           </div>
         </div>

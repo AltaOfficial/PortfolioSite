@@ -34,6 +34,9 @@ export default function ImageUpload() {
       acceptedFiles.forEach((file) => {
         dataTransfer.items.add(file);
       });
+      for (let i = 0; i < hiddenFileInputRef.current.files.length; i++) {
+        dataTransfer.items.add(hiddenFileInputRef.current.files[i]);
+      }
       hiddenFileInputRef.current.files = dataTransfer.files;
     },
   });

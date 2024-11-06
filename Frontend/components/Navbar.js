@@ -1,7 +1,15 @@
+"use client";
 import Link from "next/link";
 import DiscordLogoSvg from "./DiscordLogoSvg";
+import { useRouter } from "next/navigation";
 
-export default function Navbar({ projectsRef, previousHackathonsRef }) {
+export default function Navbar({
+  projectsRef,
+  previousHackathonsRef,
+  techStacksRef,
+  notOnHomePage,
+}) {
+  const router = useRouter();
   return (
     <div className="navbar flex place-content-between place-items-center px-5 py-8">
       <div>
@@ -10,18 +18,30 @@ export default function Navbar({ projectsRef, previousHackathonsRef }) {
 
       <div className="flex place-items-center">
         <div className="flex gap-16 mr-10 place-items-center font-semibold">
-          <Link
-            href="#"
-            className="text-center flex relative hover-glow ease-in-out duration-300"
+          <button
+            onClick={() => {
+              if (notOnHomePage) {
+                router.push("/#techStacks");
+              } else {
+                techStacksRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                });
+              }
+            }}
+            className="text-center flex relative hover-glow-2"
           >
             My tech <br />
             stacks
-          </Link>
+          </button>
           <button
             onClick={() => {
-              previousHackathonsRef.current?.scrollIntoView({
-                behavior: "smooth",
-              });
+              if (notOnHomePage) {
+                router.push("/#hackathons");
+              } else {
+                previousHackathonsRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                });
+              }
             }}
             className="text-center flex relative hover-glow-2"
           >
@@ -30,7 +50,11 @@ export default function Navbar({ projectsRef, previousHackathonsRef }) {
           </button>
           <button
             onClick={() => {
-              projectsRef.current?.scrollIntoView({ behavior: "smooth" });
+              if (notOnHomePage) {
+                router.push("/#projects");
+              } else {
+                projectsRef.current?.scrollIntoView({ behavior: "smooth" });
+              }
             }}
             className="text-center flex relative hover-glow-2"
           >

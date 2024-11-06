@@ -10,20 +10,22 @@ import { useRef } from "react";
 export default function Home() {
   const projectsRef = useRef();
   const previousHackathonsRef = useRef();
+  const techStacksRef = useRef();
 
   return (
     <div className="h-dvh">
       <Navbar
         projectsRef={projectsRef}
         previousHackathonsRef={previousHackathonsRef}
+        techStacksRef={techStacksRef}
       />
       <HomepageStarsCanvas maxSize={5} />
       <HeroSectionComponent projectsRef={projectsRef} />
       <ProjectsSectionComponent projectsRef={projectsRef} />
+      <TechStackSectionComponent techStacksRef={techStacksRef} />
       <PreviousHackathonsSectionComponent
         previousHackathonsRef={previousHackathonsRef}
       />
-      <TechStackSectionComponent />
     </div>
   );
 }
