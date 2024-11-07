@@ -117,7 +117,7 @@ export default function Project() {
           <ReactMarkdown>{project && project.body}</ReactMarkdown>
           <div className="h-7 mt-10">
             <p className="text-2xl" ref={fullTechStack}>
-              Full tech stack
+              Full Tech Stack
             </p>
             <div className="flex gap-2 font-semibold pb-10">
               {project &&
