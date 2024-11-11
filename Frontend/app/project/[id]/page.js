@@ -2,9 +2,9 @@
 import Navbar from "@/components/Navbar";
 import { useEffect, useRef, useState } from "react";
 import HomepageStarsCanvas from "@/components/HomepageStarsCanvas";
-import ReactMarkdown from "react-markdown";
+import { PortableText } from "next-sanity";
 import { useParams } from "next/navigation";
-import { getProject } from "@/app/actions";
+import { getProject } from "@/sanity/lib/sanity-utils";
 import Link from "next/link";
 
 export default function Project() {
@@ -13,18 +13,7 @@ export default function Project() {
   const [project, setProject] = useState();
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      // try to use useMemo here, so it doesnt refresh everytime user goes back to the homepage, since data isnt changing that often
-      const { data, error } = await getProject(params.id);
-      if (error) {
-        setProject(null);
-        console.error(error);
-      } else {
-        setProject(data);
-      }
-    };
-
-    fetchProjects();
+    getProject(params.id).then((project) => setProject(project));
   }, []);
 
   return (
@@ -49,32 +38,24 @@ export default function Project() {
               </p>
               <p className="opacity-75">
                 {project &&
-                  `${new Date(project.start_date).getDate()}/${new Date(
-                    project.start_date
-                  ).getMonth()}/${new Date(
-                    project.start_date
-                  ).getFullYear()} - ` +
-                    (project.end_date
-                      ? `${new Date(project.end_date).getDate()}/${new Date(
-                          project.end_date
-                        ).getMonth()}/${new Date(
-                          project.end_date
-                        ).getFullYear()}`
+                  `${new Date(project.startDate).toLocaleDateString("en-US")} - ` +
+                    (project.endDate
+                      ? `${new Date(project.endDate).toLocaleDateString("en-US")}`
                       : "Present")}
               </p>
             </div>
             <div className="flex flex-col gap-3">
-              <p className="text-xl">{project && project.short_description}</p>
+              <p className="text-xl">{project && project.shortDescription}</p>
               <div className="flex flex-wrap gap-2 font-semibold">
                 {project &&
                   project.tags
-                    .filter((tag) => tag.featured == true)
+                    .filter((tag) => tag.isFeatured == true)
                     .map((tag, index) => (
                       <p
                         key={index}
                         className="bg-[#444A5A] rounded-md p-1 px-2"
                       >
-                        {tag.content}
+                        {tag.techName}
                       </p>
                     ))}
                 <button
@@ -88,22 +69,22 @@ export default function Project() {
                 </button>
               </div>
               <div className="flex">
-                {project && project.live_site_url && (
+                {project && project.liveSiteLink && (
                   <Link
                     className="text-[#6A99FF] font-semibold"
-                    href={project.live_site_url}
+                    href={project.liveSiteLink}
                     target="_blank"
                   >
                     Visit Website
                   </Link>
                 )}
-                {project && project.repository_url && project.live_site_url && (
+                {project && project.repoLink && project.liveSiteLink && (
                   <p className="px-2">|</p>
                 )}
-                {project && project.repository_url && (
+                {project && project.repoLink && (
                   <Link
                     className="text-[#6A99FF] font-semibold"
-                    href={project.repository_url}
+                    href={project.repoLink}
                     target="_blank"
                   >
                     See Github Repo
@@ -114,7 +95,7 @@ export default function Project() {
           </div>
         </div>
         <div className="mt-20">
-          <ReactMarkdown>{project && project.body}</ReactMarkdown>
+          {project && <PortableText value={project.content} />}
           <div className="h-7 mt-10">
             <p className="text-2xl" ref={fullTechStack}>
               Full Tech Stack
@@ -123,7 +104,7 @@ export default function Project() {
               {project &&
                 project.tags.map((tag, index) => (
                   <p key={index} className="bg-[#444A5A] rounded-md p-1 px-2">
-                    {tag.content}
+                    {tag.techName}
                   </p>
                 ))}
             </div>

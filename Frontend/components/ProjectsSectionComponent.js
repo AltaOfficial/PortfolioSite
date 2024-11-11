@@ -1,45 +1,53 @@
 import { useEffect, useState } from "react";
 import ProjectComponent from "./ProjectComponent";
-import { getAllProjects } from "@/app/actions";
+import { getProjects } from "@/sanity/lib/sanity-utils";
+import { getImageAsset } from "@sanity/asset-utils";
 
 export default function ProjectsSectionComponent({ projectsRef }) {
   const [projects, setProjects] = useState();
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      // try to use useMemo here, so it doesnt refresh everytime user goes back to the homepage, since data isnt changing that often
-      const { data, error } = await getAllProjects();
-      if (error) {
-        setProjects(null);
-        console.error(error);
-      } else {
-        setProjects(data);
-      }
-    };
-
-    fetchProjects();
+    getProjects().then((projects) => {
+      setProjects(projects);
+    });
   }, []);
 
   return (
     <div className="mt-32 ml-5" id="projects" ref={projectsRef}>
       <p className="text-6xl font-semibold mb-10">My Projects</p>
-      {projects && (
-        <div className="flex gap-4 overflow-x-auto pb-10">
-          {projects
-            .slice()
-            .reverse()
-            .map((project, index) => (
-              <ProjectComponent
-                title={project.title}
-                sentenceExplaination={project.short_description}
-                tags={project.tags}
-                thumbnailUrl={project.thumbnail_url}
-                projectId={project.id}
-                key={index}
-              />
-            ))}
-        </div>
-      )}
+      <div className="flex gap-4 overflow-x-auto pb-10">
+        {projects &&
+          projects.map((project) => (
+            <ProjectComponent
+              key={project._id}
+              title={project.title}
+              tags={project.tags}
+              sentenceExplaination={project.shortDescription}
+              projectId={project._id}
+              thumbnailUrl={
+                project.projectImages.filter(
+                  (projectImage) => projectImage.isFeatured == true
+                ).length > 0
+                  ? getImageAsset(
+                      project.projectImages.filter(
+                        (projectImage) => projectImage.isFeatured == true
+                      )[0].projectImage.asset._ref,
+                      {
+                        projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+                        dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
+                      }
+                    ).url
+                  : getImageAsset(
+                      project.projectImages[0].projectImage.asset._ref,
+                      {
+                        projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+                        dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
+                      }
+                    ).url
+              }
+            />
+          ))}
+      </div>
     </div>
   );
 }

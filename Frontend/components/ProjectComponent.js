@@ -18,10 +18,10 @@ export default function ProjectComponent({
         />
         <div className="font-bold text-black flex gap-2 mt-3 h-8">
           {tags
-            .filter((tag) => tag.featured == true)
+            .filter((tag) => tag.isFeatured == true)
             .map((tag, index) => (
               <p key={index} className="bg-white px-4 py-1 rounded-lg">
-                {tag.content}
+                {tag.techName}
               </p>
             ))}
         </div>
