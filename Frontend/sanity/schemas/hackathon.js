@@ -54,6 +54,35 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "team",
+      title: "Team",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            {
+              name: "teamMemberName",
+              title: "Team Member Name",
+              type: "string",
+              validation: (rule) => rule.required(),
+            },
+            {
+              name: "teamMemberAvatar",
+              title: "Team Member Avatar",
+              type: "image",
+              validation: (rule) => rule.required(),
+            },
+            {
+              name: "teamMemberUrl",
+              title: "Team Member Url",
+              type: "url",
+            },
+          ],
+        },
+      ],
+    }),
+    defineField({
       name: "tags",
       title: "Tech Stack",
       type: "array",
