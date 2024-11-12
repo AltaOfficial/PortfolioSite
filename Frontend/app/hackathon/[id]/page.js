@@ -2,7 +2,6 @@
 import Navbar from "@/components/Navbar";
 import { useRef } from "react";
 import HomepageStarsCanvas from "@/components/HomepageStarsCanvas";
-import ReactMarkdown from "react-markdown";
 
 export default function Hackathon() {
   const projectsRef = useRef();
