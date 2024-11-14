@@ -16,7 +16,9 @@ export default function PreviousHackathonsSectionComponent({
 
   return (
     <div className="mt-32 ml-5" id="hackathons" ref={previousHackathonsRef}>
-      <p className="text-6xl font-semibold mb-10">Past Hackathons</p>
+      <p className="lg:text-6xl text-5xl font-semibold mb-10">
+        Past Hackathons
+      </p>
       <div className="flex gap-4 overflow-x-auto pb-10">
         {hackathons &&
           hackathons.map((hackathon) => (

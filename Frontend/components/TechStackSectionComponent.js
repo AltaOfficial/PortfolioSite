@@ -25,7 +25,7 @@ export default function TechStackSectionComponent({ techStacksRef }) {
         My Tech Stack and Experience
       </p>
       <div>
-        <div className="h-96 grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 md:gap-2 sm:place-items-center xl:place-items-start lg:place-items-center place-items-center">
+        <div className=" grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 md:gap-2 sm:place-items-center xl:place-items-start lg:place-items-center place-items-center">
           {techCategories &&
             techCategories.map((techCategory, index) => (
               <div
