@@ -20,7 +20,7 @@ export default function TechStackSectionComponent({ techStacksRef }) {
   }, []);
 
   return (
-    <div className="mt-32 ml-5" id="techStacks" ref={techStacksRef}>
+    <div className="mt-32 sm:ml-5 ml-1" id="techStacks" ref={techStacksRef}>
       <p className="lg:text-6xl text-4xl font-semibold mb-10">
         My Tech Stack and Experience
       </p>

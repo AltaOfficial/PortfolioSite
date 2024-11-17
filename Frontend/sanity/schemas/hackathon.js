@@ -35,6 +35,16 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "repoLink",
+      title: "Repository Link",
+      type: "url",
+    }),
+    defineField({
+      name: "liveSiteLink",
+      title: "Live Site Link",
+      type: "url",
+    }),
+    defineField({
       name: "startDate",
       title: "Start Date",
       type: "date",

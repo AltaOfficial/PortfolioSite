@@ -15,7 +15,11 @@ export default function PreviousHackathonsSectionComponent({
   }, []);
 
   return (
-    <div className="mt-32 ml-5" id="hackathons" ref={previousHackathonsRef}>
+    <div
+      className="mt-32 sm:ml-5 ml-1"
+      id="hackathons"
+      ref={previousHackathonsRef}
+    >
       <p className="lg:text-6xl text-5xl font-semibold mb-10">
         Past Hackathons
       </p>

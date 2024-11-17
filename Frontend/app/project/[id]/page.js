@@ -6,6 +6,9 @@ import { PortableText } from "next-sanity";
 import { useParams } from "next/navigation";
 import { getProject } from "@/sanity/lib/sanity-utils";
 import Link from "next/link";
+import ImageSlider from "@/components/ImageSlider";
+import { FaGithub } from "react-icons/fa6";
+import { getImageAsset } from "@sanity/asset-utils";
 
 export default function Project() {
   const fullTechStack = useRef();
@@ -23,13 +26,24 @@ export default function Project() {
       <div className="px-36">
         <div className="grid grid-cols-2 gap-10 mt-10">
           <div className="flex place-content-center">
-            <img
-              className="rounded-lg outline outline-white outline-3"
-              src="https://spreadsimple.com/blog/content/images/2022/08/stripe-main-page.png"
-              alt=""
-              width={"640"}
-              height={"360"}
-            />
+            {project && (
+              <ImageSlider
+                imageUrls={project.projectImages
+                  .filter(
+                    (projectImageSet) => projectImageSet.isFeatured != true
+                  )
+                  .map((projectImageSet) => {
+                    return getImageAsset(
+                      projectImageSet.projectImage.asset._ref,
+                      {
+                        projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+                        dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
+                      }
+                    ).url;
+                  })}
+                className={"rounded-lg outline outline-white outline-3"}
+              />
+            )}
           </div>
           <div className="pt-5">
             <div className="mb-6">
@@ -83,10 +97,11 @@ export default function Project() {
                 )}
                 {project && project.repoLink && (
                   <Link
-                    className="text-[#6A99FF] font-semibold"
+                    className="text-[#6A99FF] font-semibold flex place-items-center gap-1"
                     href={project.repoLink}
                     target="_blank"
                   >
+                    <FaGithub className="fill-white" size={20} />
                     See Github Repo
                   </Link>
                 )}

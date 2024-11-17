@@ -16,6 +16,8 @@ export default function Navbar({
         <Link href={"/"}>Jaedonfarr.dev</Link>
       </div>
 
+      <div></div>
+
       <div className="sm:flex hidden place-items-center">
         <div className="flex gap-16 mr-10 place-items-center font-semibold">
           <button

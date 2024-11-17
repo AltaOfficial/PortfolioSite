@@ -11,11 +11,9 @@ export default function ProjectComponent({
     <div className="bg-[#161515] h-[32rem] p-4 rounded-2xl border border-white">
       <div className="w-[20rem] flex flex-col gap-2">
         <p className="text-3xl font-semibold my-3">{title}</p>
-        <img
-          className="rounded-lg self-center aspect-video"
-          src={thumbnailUrl}
-          alt=""
-        />
+        <div className="h-44 place-content-center">
+          <img className="rounded-lg self-center " src={thumbnailUrl} alt="" />
+        </div>
         <div className="font-bold text-black flex gap-2 mt-3 h-8">
           {tags
             .filter((tag) => tag.isFeatured == true)

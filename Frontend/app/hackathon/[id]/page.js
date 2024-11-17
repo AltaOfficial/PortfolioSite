@@ -1,61 +1,151 @@
 "use client";
 import Navbar from "@/components/Navbar";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import HomepageStarsCanvas from "@/components/HomepageStarsCanvas";
+import { getHackathon } from "@/sanity/lib/sanity-utils";
+import { useParams } from "next/navigation";
+import { PortableText } from "next-sanity";
+import { getImageAsset } from "@sanity/asset-utils";
+import Link from "next/link";
+import Image from "next/image";
+import ImageSlider from "@/components/ImageSlider";
+import { FaGithub } from "react-icons/fa6";
 
 export default function Hackathon() {
-  const projectsRef = useRef();
-  const previousHackathonsRef = useRef();
+  const fullTechStack = useRef();
+  const params = useParams();
+  const images = [
+    "https://spreadsimple.com/blog/content/images/2022/08/stripe-main-page.png",
+  ];
+  const [hackathon, setHackathon] = useState();
+
+  useEffect(() => {
+    getHackathon(params.id).then((hackathon) => {
+      setHackathon(hackathon);
+    });
+  }, []);
+
   return (
     <div className="h-dvh">
-      <Navbar
-        projectsRef={projectsRef}
-        previousHackathonsRef={previousHackathonsRef}
-      />
+      <Navbar notOnHomePage={true} />
       <HomepageStarsCanvas maxSize={2} />
       <div className="px-36">
+        <div className="grid grid-cols-2 gap-10 mt-10">
+          <div className="flex place-content-center">
+            {hackathon && (
+              <ImageSlider
+                imageUrls={hackathon.hackathonImages
+                  .filter(
+                    (hackathonImageSet) => hackathonImageSet.isFeatured != true
+                  )
+                  .map((hackathonImageSet) => {
+                    return getImageAsset(
+                      hackathonImageSet.hackathonImage.asset._ref,
+                      {
+                        projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+                        dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
+                      }
+                    ).url;
+                  })}
+                className={"rounded-lg outline outline-white outline-3"}
+              />
+            )}
+          </div>
+          <div className="pt-5">
+            <div className="mb-6">
+              <p className="text-4xl font-semibold">
+                {hackathon && hackathon.title}
+              </p>
+              <p className="opacity-75">
+                {hackathon &&
+                  `${new Date(hackathon.startDate).toLocaleDateString("en-US")} - ` +
+                    (hackathon.endDate
+                      ? `${new Date(hackathon.endDate).toLocaleDateString("en-US")}`
+                      : "Present")}
+              </p>
+            </div>
+            <div className="flex flex-col gap-3">
+              <p className="text-xl">
+                {hackathon && hackathon.shortDescription}
+              </p>
+              <div className="flex">
+                {hackathon && hackathon.liveSiteLink && (
+                  <Link
+                    className="text-[#6A99FF] font-semibold"
+                    href={hackathon.liveSiteLink}
+                    target="_blank"
+                  >
+                    Visit Website
+                  </Link>
+                )}
+                {hackathon && hackathon.repoLink && hackathon.liveSiteLink && (
+                  <p className="px-2">|</p>
+                )}
+                {hackathon && hackathon.repoLink && (
+                  <Link
+                    className="text-[#6A99FF] font-semibold flex place-items-center gap-1"
+                    href={hackathon.repoLink}
+                    target="_blank"
+                  >
+                    <FaGithub className="fill-white" size={20} />
+                    See Github Repo
+                  </Link>
+                )}
+              </div>
+              <div className="flex flex-col flex-wrap gap-2 font-semibold">
+                {hackathon && <p>Team</p>}
+                <div className="flex gap-2">
+                  {hackathon &&
+                    hackathon.team.map((teamMember, index) => (
+                      <div key={index} className="flex flex-col gap-2">
+                        <Link
+                          href={
+                            teamMember.teamMemberUrl
+                              ? teamMember.teamMemberUrl
+                              : ""
+                          }
+                          target="_blank"
+                          className={`flex flex-row place-items-center ${teamMember.teamMemberUrl ? "" : "cursor-default"}`}
+                        >
+                          <Image
+                            width={30}
+                            height={30}
+                            src={
+                              getImageAsset(
+                                teamMember.teamMemberAvatar.asset._ref,
+                                {
+                                  projectId:
+                                    process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+                                  dataset:
+                                    process.env.NEXT_PUBLIC_SANITY_DATASET,
+                                }
+                              ).url
+                            }
+                            alt=""
+                            className="rounded-full"
+                          />
+                          <p className="px-2">{teamMember.teamMemberName}</p>
+                        </Link>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="mt-20">
-          <p>
-            Inspiration As a team with experience in early childhood education
-            and tutoring, we noticed a significant gap in the literacy levels
-            with which students enter college. Given the use of high-level texts
-            in many courses, we aimed to create a tool to assist students in
-            developing these crucial skills by simplifying such texts. What it
-            does As a team with experience in early childhood education and
-            tutoring, we noticed a significant gap in the literacy levels with
-            which students enter college. Given the use of high-level texts in
-            many courses, we aimed to create a tool to assist students in
-            developing these crucial skills by simplifying such texts. How I
-            built it This software was built using Django for the backend
-            functionality, BeautifulSoup for the web scrapers handling the
-            original inputted text, Postgres for the article database, Bootstrap
-            for the UI and front-end development, and OpenAIs API for the AI
-            component. Accomplishments that Im proud of We are proud to announce
-            that the product currently functions as intended, and we firmly
-            believe it can make a difference in students academic journeys. Our
-            hope is that this tool will aid students in enhancing their literacy
-            skills and fostering a passion for reading. Furthermore, by
-            utilizing real online articles, Maestro has the potential to
-            significantly improve overall knowledge of current events.
-            Challenges Faced One of the main challenges was integrating the
-            website with our clubs existing systems. We had to ensure seamless
-            data flow between the website and our membership database.
-            Additionally, optimizing the website for performance and
-            accessibility was a top priority throughout the development process.
-            Future Plans Our plan is to further develop Maestro and tailor it
-            for K-12 education. We envision teachers using this tool to
-            customize articles for each student in their class and adjust the
-            generated problems accordingly. Through this approach, students can
-            enhance their literacy skills at their own pace, while teachers gain
-            insights into individual student performance through the accuracy of
-            the generated questions.
-          </p>
-          <div>
-            <p className="text-2xl">Full tech stack</p>
-            <div className="flex gap-2 font-semibold">
-              <p className="bg-[#444A5A] rounded-md p-1 px-2">Next.js</p>
-              <p className="bg-[#444A5A] rounded-md p-1 px-2">React</p>
-              <p className="bg-[#444A5A] rounded-md p-1 px-2">Tailwindcss</p>
+          {hackathon && <PortableText value={hackathon.content} />}
+          <div className="h-7 mt-10">
+            <p className="text-2xl" ref={fullTechStack}>
+              Full Tech Stack
+            </p>
+            <div className="flex gap-2 font-semibold pb-10">
+              {hackathon &&
+                hackathon.tags.map((tag, index) => (
+                  <p key={index} className="bg-[#444A5A] rounded-md p-1 px-2">
+                    {tag.techName}
+                  </p>
+                ))}
             </div>
           </div>
         </div>

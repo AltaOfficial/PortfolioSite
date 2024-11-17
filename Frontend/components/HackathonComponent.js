@@ -18,13 +18,11 @@ export default function HackathonComponent({
     <div className="bg-[#161515] h-[32rem] p-4 rounded-2xl border border-white">
       <div className="w-[20rem] flex flex-col gap-2">
         <p className="text-3xl font-semibold my-3">{title}</p>
-        <img
-          className="rounded-lg self-center aspect-video"
-          src={frontPicture}
-          alt=""
-        />
+        <div className="h-44 place-content-center">
+          <img className="rounded-lg self-center " src={frontPicture} alt="" />
+        </div>
         <div className="font-bold text-black flex gap-2 mt-3 ">
-          <p className="bg-white px-4 py-1 rounded-lg">
+          <p className="bg-white px-4 py-1 rounded-lg text-nowrap">
             {formatter.format(new Date(startDate))} -{" "}
             {formatter.format(new Date(endDate))}
           </p>

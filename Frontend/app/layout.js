@@ -1,7 +1,6 @@
 import localFont from "next/font/local";
 import { ToastProvider } from "@/components/toast/toastComponent";
 import "./globals.css";
-import "react-slideshow-image/dist/styles.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

@@ -13,7 +13,7 @@ export default function ProjectsSectionComponent({ projectsRef }) {
   }, []);
 
   return (
-    <div className="mt-32 ml-5" id="projects" ref={projectsRef}>
+    <div className="mt-32 sm:ml-5 ml-1" id="projects" ref={projectsRef}>
       <p className="lg:text-6xl text-5xl font-semibold mb-10">My Projects</p>
       <div className="flex gap-4 overflow-x-auto pb-10">
         {projects &&

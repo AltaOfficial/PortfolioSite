@@ -49,7 +49,8 @@ export async function getHackathon(hackathonId) {
     liveSiteLink,
     repoLink,
     tags,
-    shortDescription
+    shortDescription,
+    team
     }`);
 }
 
