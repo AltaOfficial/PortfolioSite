@@ -2,12 +2,14 @@
 import Link from "next/link";
 import DiscordLogoSvg from "./DiscordLogoSvg";
 import { useRouter } from "next/navigation";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 export default function Navbar({
   projectsRef,
   previousHackathonsRef,
   techStacksRef,
   notOnHomePage,
+  setHamburgerMenuOpen,
 }) {
   const router = useRouter();
   return (
@@ -16,7 +18,14 @@ export default function Navbar({
         <Link href={"/"}>Jaedonfarr.dev</Link>
       </div>
 
-      <div></div>
+      <GiHamburgerMenu
+        onClick={() => {
+          setHamburgerMenuOpen(true);
+          document.body.style.overflow = "hidden";
+        }}
+        className="sm:hidden"
+        size={25}
+      />
 
       <div className="sm:flex hidden place-items-center">
         <div className="flex gap-16 mr-10 place-items-center font-semibold">

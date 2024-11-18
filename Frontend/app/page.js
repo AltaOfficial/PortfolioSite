@@ -5,19 +5,26 @@ import ProjectsSectionComponent from "@/components/ProjectsSectionComponent";
 import PreviousHackathonsSectionComponent from "@/components/PreviousHackathonsSectionComponent";
 import HomepageStarsCanvas from "@/components/HomepageStarsCanvas";
 import TechStackSectionComponent from "@/components/TechStackSectionComponent";
-import { useRef } from "react";
+import HamburgerMenuComponent from "@/components/HamburgerMenuComponent";
+import { useRef, useState } from "react";
 
 export default function Home() {
   const projectsRef = useRef();
   const previousHackathonsRef = useRef();
   const techStacksRef = useRef();
+  const [hamburgerMenuOpen, setHamburgerMenuOpen] = useState(false);
 
   return (
     <div className="h-dvh">
+      <HamburgerMenuComponent
+        hamburgerMenuOpen={hamburgerMenuOpen}
+        setHamburgerMenuOpen={setHamburgerMenuOpen}
+      />
       <Navbar
         projectsRef={projectsRef}
         previousHackathonsRef={previousHackathonsRef}
         techStacksRef={techStacksRef}
+        setHamburgerMenuOpen={setHamburgerMenuOpen}
       />
       <HomepageStarsCanvas maxSize={5} />
       <HeroSectionComponent projectsRef={projectsRef} />
