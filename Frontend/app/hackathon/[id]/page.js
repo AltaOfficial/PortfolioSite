@@ -26,17 +26,17 @@ export default function Hackathon() {
   }, []);
 
   return (
-    <div className="h-dvh">
+    <div className="h-dvh flex flex-col">
       <Navbar notOnHomePage={true} />
       <HomepageStarsCanvas maxSize={2} />
-      <div className="px-36">
-        <div className="grid grid-cols-2 gap-10 mt-10">
+      <div className="px-4 sm:px-8 md:px-16 lg:px-36">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-10 mt-10">
           <div className="flex place-content-center">
             {hackathon && (
               <ImageSlider
                 imageUrls={hackathon.hackathonImages
                   .filter(
-                    (hackathonImageSet) => hackathonImageSet.isFeatured != true
+                    (hackathonImageSet) => hackathonImageSet.isFeatured !== true
                   )
                   .map((hackathonImageSet) => {
                     return getImageAsset(
@@ -47,13 +47,15 @@ export default function Hackathon() {
                       }
                     ).url;
                   })}
-                className={"rounded-lg outline outline-white outline-3"}
+                className={
+                  "rounded-lg outline outline-white outline-3 max-w-full"
+                }
               />
             )}
           </div>
           <div className="pt-5">
             <div className="mb-6">
-              <p className="text-4xl font-semibold">
+              <p className="text-2xl sm:text-3xl md:text-4xl font-semibold">
                 {hackathon && hackathon.title}
               </p>
               <p className="opacity-75">
@@ -65,10 +67,10 @@ export default function Hackathon() {
               </p>
             </div>
             <div className="flex flex-col gap-3">
-              <p className="text-xl">
+              <p className="text-base sm:text-lg md:text-xl">
                 {hackathon && hackathon.shortDescription}
               </p>
-              <div className="flex">
+              <div className="flex flex-wrap items-center mt-2 gap-2">
                 {hackathon && hackathon.liveSiteLink && (
                   <Link
                     className="text-[#6A99FF] font-semibold"
@@ -83,7 +85,7 @@ export default function Hackathon() {
                 )}
                 {hackathon && hackathon.repoLink && (
                   <Link
-                    className="text-[#6A99FF] font-semibold flex place-items-center gap-1"
+                    className="text-[#6A99FF] font-semibold flex items-center gap-1"
                     href={hackathon.repoLink}
                     target="_blank"
                   >
@@ -92,9 +94,9 @@ export default function Hackathon() {
                   </Link>
                 )}
               </div>
-              <div className="flex flex-col flex-wrap gap-2 font-semibold">
+              <div className="flex flex-col flex-wrap gap-2 font-semibold mt-4">
                 {hackathon && <p>Team</p>}
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   {hackathon &&
                     hackathon.team.map((teamMember, index) => (
                       <div key={index} className="flex flex-col gap-2">
@@ -105,7 +107,9 @@ export default function Hackathon() {
                               : ""
                           }
                           target="_blank"
-                          className={`flex flex-row place-items-center ${teamMember.teamMemberUrl ? "" : "cursor-default"}`}
+                          className={`flex flex-row items-center ${
+                            teamMember.teamMemberUrl ? "" : "cursor-default"
+                          }`}
                         >
                           <Image
                             width={30}
@@ -124,7 +128,9 @@ export default function Hackathon() {
                             alt=""
                             className="rounded-full"
                           />
-                          <p className="px-2">{teamMember.teamMemberName}</p>
+                          <p className="px-2 text-sm sm:text-base">
+                            {teamMember.teamMemberName}
+                          </p>
                         </Link>
                       </div>
                     ))}
@@ -135,14 +141,17 @@ export default function Hackathon() {
         </div>
         <div className="mt-20">
           {hackathon && <PortableText value={hackathon.content} />}
-          <div className="h-7 mt-10">
-            <p className="text-2xl" ref={fullTechStack}>
+          <div className="mt-10">
+            <p className="text-lg sm:text-2xl" ref={fullTechStack}>
               Full Tech Stack
             </p>
-            <div className="flex gap-2 font-semibold pb-10">
+            <div className="flex flex-wrap gap-2 font-semibold pb-10 mt-4">
               {hackathon &&
                 hackathon.tags.map((tag, index) => (
-                  <p key={index} className="bg-[#444A5A] rounded-md p-1 px-2">
+                  <p
+                    key={index}
+                    className="bg-[#444A5A] rounded-md p-1 px-2 text-sm sm:text-base"
+                  >
                     {tag.techName}
                   </p>
                 ))}
