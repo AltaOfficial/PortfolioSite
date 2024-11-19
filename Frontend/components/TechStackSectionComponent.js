@@ -20,12 +20,8 @@ export default function TechStackSectionComponent({ techStacksRef }) {
   }, []);
 
   return (
-    <div
-      className="mt-20 sm:mt-32 ml-2 sm:ml-5"
-      id="techStacks"
-      ref={techStacksRef}
-    >
-      <p className="text-3xl sm:text-4xl lg:text-6xl font-semibold mb-6 sm:mb-10">
+    <div className="mt-20 sm:mt-32 sm:ml-5" id="techStacks" ref={techStacksRef}>
+      <p className="text-3xl sm:text-4xl lg:text-6xl font-semibold mb-6 sm:mb-10 sm:ml-0 ml-2">
         My Tech Stack and Experience
       </p>
       <div>
