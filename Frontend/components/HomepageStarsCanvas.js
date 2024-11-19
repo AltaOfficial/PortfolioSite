@@ -2,7 +2,6 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 
 export default function HomepageStarsCanvas({ className, maxSize }) {
-  const amountOfStarsToRender = 100;
   const canvasDots = [];
   const canvasRef = useRef();
 
@@ -21,10 +20,10 @@ export default function HomepageStarsCanvas({ className, maxSize }) {
 
     context.strokeStyle = "white";
     context.fillStyle = "white";
-    for (let i = 0; i < amountOfStarsToRender; i++) {
+    for (let i = 0; i < (window.innerWidth * 5) / 70; i++) {
       context.beginPath();
       let canvasDotX = Math.floor(Math.random() * canvas.offsetWidth);
-      let canvasDotY = Math.floor(Math.random() * canvas.offsetWidth);
+      let canvasDotY = Math.floor(Math.random() * canvas.offsetHeight);
       canvasDots.push([canvasDotX, canvasDotY]);
       context.arc(
         canvasDotX,
@@ -41,7 +40,9 @@ export default function HomepageStarsCanvas({ className, maxSize }) {
     <canvas
       onMouseMove={handleMouseMove}
       ref={canvasRef}
-      className={"-z-10 absolute " + className}
+      //height={"100%"}
+      //width={"100%"}
+      className={"-z-10 absolute w-full " + (className ? className : "")}
     ></canvas>
   );
 }

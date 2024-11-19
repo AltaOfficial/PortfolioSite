@@ -5,7 +5,7 @@ import ProjectsSectionComponent from "@/components/ProjectsSectionComponent";
 import PreviousHackathonsSectionComponent from "@/components/PreviousHackathonsSectionComponent";
 import HomepageStarsCanvas from "@/components/HomepageStarsCanvas";
 import TechStackSectionComponent from "@/components/TechStackSectionComponent";
-import HamburgerMenuComponent from "@/components/HamburgerMenuComponent";
+import { HamburgerMenuComponent } from "@/components/hamburger menu/HamburgerMenuComponent";
 import { useRef, useState } from "react";
 
 export default function Home() {
@@ -16,10 +16,6 @@ export default function Home() {
 
   return (
     <div className="h-dvh">
-      <HamburgerMenuComponent
-        hamburgerMenuOpen={hamburgerMenuOpen}
-        setHamburgerMenuOpen={setHamburgerMenuOpen}
-      />
       <Navbar
         projectsRef={projectsRef}
         previousHackathonsRef={previousHackathonsRef}

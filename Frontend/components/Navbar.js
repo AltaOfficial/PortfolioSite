@@ -3,15 +3,19 @@ import Link from "next/link";
 import DiscordLogoSvg from "./DiscordLogoSvg";
 import { useRouter } from "next/navigation";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { useContext } from "react";
+import { HamburgerMenuContext } from "@/components/hamburger menu/hamburgerMenuContext";
 
 export default function Navbar({
   projectsRef,
   previousHackathonsRef,
   techStacksRef,
   notOnHomePage,
-  setHamburgerMenuOpen,
 }) {
   const router = useRouter();
+  const { hamburgerMenuIsOpen, setHamburgerMenuIsOpen } =
+    useContext(HamburgerMenuContext);
+
   return (
     <div className="navbar flex place-content-between place-items-center px-5 py-8">
       <div>
@@ -20,8 +24,10 @@ export default function Navbar({
 
       <GiHamburgerMenu
         onClick={() => {
-          setHamburgerMenuOpen(true);
+          setHamburgerMenuIsOpen(true);
           document.body.style.overflow = "hidden";
+          console.log("open");
+          console.log(hamburgerMenuIsOpen);
         }}
         className="sm:hidden"
         size={25}
