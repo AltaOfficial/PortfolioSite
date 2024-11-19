@@ -20,42 +20,44 @@ export default function TechStackSectionComponent({ techStacksRef }) {
   }, []);
 
   return (
-    <div className="mt-32 sm:ml-5 ml-1" id="techStacks" ref={techStacksRef}>
-      <p className="lg:text-6xl text-4xl font-semibold mb-10">
+    <div
+      className="mt-20 sm:mt-32 ml-2 sm:ml-5"
+      id="techStacks"
+      ref={techStacksRef}
+    >
+      <p className="text-3xl sm:text-4xl lg:text-6xl font-semibold mb-6 sm:mb-10">
         My Tech Stack and Experience
       </p>
       <div>
-        <div className=" grid 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 md:gap-2 sm:place-items-center xl:place-items-start lg:place-items-center place-items-center">
+        <div className="grid gap-8 md:gap-10 xl:gap-12 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 sm:place-items-center xl:place-items-start lg:place-items-center place-items-center">
           {techCategories &&
             techCategories.map((techCategory, index) => (
               <div
                 key={index}
-                className="flex flex-col gap-4 place-items-center"
+                className="flex flex-col gap-4 items-center sm:items-start"
               >
-                <p className="lg:text-3xl text-xl mb-2 font-semibold">
+                <p className="text-xl sm:text-2xl lg:text-3xl font-semibold mb-4">
                   {techCategory}
                 </p>
-                {techStacks &&
-                  techStacks
-                    .filter(
-                      (techStackFilterItem) =>
-                        techStackFilterItem.techCategory == techCategory
-                    )
-                    .map((techStackItem) => (
-                      <TechnologyComponent
-                        key={techStackItem._id}
-                        pictureUrl={
-                          getImageAsset(techStackItem.techItemLogo.asset._ref, {
-                            projectId:
-                              process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-                            dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
-                          }).url
-                        }
-                        techName={techStackItem.techName}
-                        familiarity={techStackItem.familiarity}
-                        expirienceDesc={techStackItem.expirience}
-                      />
-                    ))}
+                {techStacks
+                  .filter(
+                    (techStackItem) =>
+                      techStackItem.techCategory === techCategory
+                  )
+                  .map((techStackItem) => (
+                    <TechnologyComponent
+                      key={techStackItem._id}
+                      pictureUrl={
+                        getImageAsset(techStackItem.techItemLogo.asset._ref, {
+                          projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+                          dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
+                        }).url
+                      }
+                      techName={techStackItem.techName}
+                      familiarity={techStackItem.familiarity}
+                      expirienceDesc={techStackItem.expirience}
+                    />
+                  ))}
               </div>
             ))}
         </div>
