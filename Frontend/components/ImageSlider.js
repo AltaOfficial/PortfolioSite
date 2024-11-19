@@ -21,7 +21,7 @@ export default function ImageSlider({ imageUrls, className }) {
   return (
     <div
       className={
-        "flex w-[640px] h-[360px] relative overflow-hidden" +
+        "flex sm:w-[640px] sm:h-[360px] w-[320px] h-[180px] relative overflow-hidden" +
         (className ? " " + className : "")
       }
     >

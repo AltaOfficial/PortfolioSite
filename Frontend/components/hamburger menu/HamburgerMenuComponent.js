@@ -1,15 +1,12 @@
 "use client";
 import { FiX } from "react-icons/fi";
 import { HamburgerMenuContext } from "./hamburgerMenuContext";
-import { useState, useContext } from "react";
+import { useState } from "react";
 
 export function HamburgerMenuComponent({
   hamburgerMenuIsOpen,
   setHamburgerMenuIsOpen,
 }) {
-  setInterval(() => {
-    console.log(hamburgerMenuIsOpen);
-  }, 2000);
   return (
     <div
       className="fixed h-full w-full z-20 top-0 bg-black"
