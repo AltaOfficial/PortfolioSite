@@ -2,7 +2,7 @@ import HandWaveLogoSvg from "./HandWaveLogoSvg";
 
 export default function HeroSectionComponent({ projectsRef }) {
   return (
-    <div className="flex flex-col items-center justify-center h-[calc(100%-15rem)]">
+    <div className="flex flex-col items-center justify-center h-[42rem]">
       <div className="flex items-center">
         <p className="font-bold text-3xl sm:text-4xl">Hi, I&apos;m Jaedon</p>
         <HandWaveLogoSvg />
