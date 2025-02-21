@@ -8,7 +8,7 @@ export default function HeroSectionComponent({ projectsRef }) {
         <HandWaveLogoSvg />
       </div>
       <p className="font-medium text-lg sm:text-xl mt-2">
-        I like coding and stuff.
+        Love building websites 💻, interested in AI 🤖.
       </p>
       <button
         onClick={() => {
