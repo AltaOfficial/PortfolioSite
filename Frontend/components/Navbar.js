@@ -1,10 +1,10 @@
 "use client";
 import Link from "next/link";
-import DiscordLogoSvg from "./DiscordLogoSvg";
 import { useRouter } from "next/navigation";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useContext } from "react";
 import { HamburgerMenuContext } from "@/components/hamburger menu/hamburgerMenuContext";
+import { FaDiscord, FaGithub } from "react-icons/fa6";
 
 export default function Navbar({
   projectsRef,
@@ -79,12 +79,15 @@ export default function Navbar({
             <br /> Worked On
           </button>
         </div>
-        <div>
+        <div className="flex gap-3">
           <a
             href="http://discordapp.com/users/301029614447230976"
             target="_blank"
           >
-            <DiscordLogoSvg />
+            <FaDiscord size={23} />
+          </a>
+          <a href="https://github.com/AltaOfficial" target="_blank">
+            <FaGithub size={23} />
           </a>
         </div>
       </div>
