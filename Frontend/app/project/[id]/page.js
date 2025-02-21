@@ -114,8 +114,10 @@ export default function Project() {
             </div>
           </div>
         </div>
-        <div className="mt-20">
-          {project && <PortableText value={project.content} />}
+        <div className="mt-20 ">
+          <div className="reset-defaults">
+            {project && <PortableText value={project.content} />}
+          </div>
           <div className="mt-10">
             <p className="text-lg sm:text-2xl" ref={fullTechStack}>
               Full Tech Stack

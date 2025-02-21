@@ -80,9 +80,12 @@ export default function Navbar({
           </button>
         </div>
         <div>
-          <button>
+          <a
+            href="http://discordapp.com/users/301029614447230976"
+            target="_blank"
+          >
             <DiscordLogoSvg />
-          </button>
+          </a>
         </div>
       </div>
     </div>

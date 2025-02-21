@@ -140,7 +140,9 @@ export default function Hackathon() {
           </div>
         </div>
         <div className="mt-20">
-          {hackathon && <PortableText value={hackathon.content} />}
+          <div className="reset-defaults">
+            {hackathon && <PortableText value={hackathon.content} />}
+          </div>
           <div className="mt-10">
             <p className="text-lg sm:text-2xl" ref={fullTechStack}>
               Full Tech Stack

@@ -37,6 +37,10 @@ blockquote {
   fill: white;
 }
 
+.reset-defaults * {
+  all: revert !important;
+}
+
 @layer base {
   ::-webkit-scrollbar-track {
     background: black !important;
@@ -66,11 +70,51 @@ blockquote {
   }
 }
 
+.techstacks {
+  display: grid;
+  grid-template-columns: 1;
+  margin-top: 12px;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+@media screen and (min-width: 480px) {
+  .techstacks {
+    display: grid;
+    grid-template-columns: 1 1;
+    margin-top: 12px;
+    margin-bottom: 20px;
+    gap: 8px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .techstacks {
+    display: grid;
+    grid-template-columns: 1 1 1;
+    margin-top: 12px;
+    margin-bottom: 20px;
+    gap: 8px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .techstacks {
+    display: grid;
+    grid-template-columns: 1 1 1 1;
+    margin-top: 12px;
+    margin-bottom: 20px;
+    gap: 8px;
+  }
+}
+
 @layer components {
   .hover-glow-2::after {
     height: 0%;
     width: 0%;
-    transition: width 10s, height 10s;
+    transition:
+      width 10s,
+      height 10s;
   }
 
   .hover-glow-2:hover::after {
