@@ -1,4 +1,3 @@
-import localFont from "next/font/local";
 import { ToastProvider } from "@/components/toast/toastComponent";
 import { HamburgerMenuProvider } from "@/components/hamburger menu/HamburgerMenuComponent";
 import "./globals.css";
