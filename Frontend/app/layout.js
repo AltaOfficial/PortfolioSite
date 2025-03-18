@@ -1,5 +1,6 @@
 import { ToastProvider } from "@/components/toast/toastComponent";
 import { HamburgerMenuProvider } from "@/components/hamburger menu/HamburgerMenuComponent";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 export const metadata = {
@@ -13,6 +14,7 @@ export default function RootLayout({ children }) {
       <body>
         <ToastProvider>
           <HamburgerMenuProvider>{children}</HamburgerMenuProvider>
+          <Analytics />
         </ToastProvider>
       </body>
     </html>
